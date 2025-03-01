@@ -1,0 +1,72 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Quart
+      id: quart
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Quart
+        setup-command: javac src/main/java/org/example/Main.java
+        command: java -cp src/main/java org.example.Main
+        input: '4'
+        expected-output: '16.0'
+        comparison-method: contains
+        timeout: 10
+        max-score: 1
+    - name: Pint
+      id: pint
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Pint
+        setup-command: javac src/main/java/org/example/Main.java
+        command: java -cp src/main/java org.example.Main
+        input: '4'
+        expected-output: '32.0'
+        comparison-method: contains
+        timeout: 10
+        max-score: 1
+    - name: Cups
+      id: cups
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Cups
+        setup-command: javac src/main/java/org/example/Main.java
+        command: java -cp src/main/java org.example.Main
+        input: '4'
+        expected-output: '64'
+        comparison-method: contains
+        timeout: 10
+        max-score: 1
+    - name: Tablespoons
+      id: tablespoons
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Tablespoons
+        setup-command: javac src/main/java/org/example/Main.java
+        command: java -cp src/main/java org.example.Main
+        input: '4'
+        expected-output: '1024.0'
+        comparison-method: contains
+        timeout: 10
+        max-score: 1
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        QUART_RESULTS: "${{steps.quart.outputs.result}}"
+        PINT_RESULTS: "${{steps.pint.outputs.result}}"
+        CUPS_RESULTS: "${{steps.cups.outputs.result}}"
+        TABLESPOONS_RESULTS: "${{steps.tablespoons.outputs.result}}"
+      with:
+        runners: quart,pint,cups,tablespoons
