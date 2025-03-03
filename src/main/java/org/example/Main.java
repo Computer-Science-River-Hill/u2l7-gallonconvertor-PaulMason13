@@ -3,7 +3,7 @@ package org.example; //DO NOT DELETE
 import java.util.Scanner;
 import java.text.NumberFormat;
 
-public class main{
+public class Main{
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         NumberFormat percentFormat = NumberFormat.getPercentInstance();
